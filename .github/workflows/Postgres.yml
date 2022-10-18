@@ -33,7 +33,7 @@ jobs:
 
     - name: Printing KeyVault Secrets
       run: |          
-          echo "${{ steps.ReadKeyVault.outputs.ActiveDatabaseUrl }}"          
+          echo "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"          
 
     - name: Stopping Postgres Server
       uses: azure/CLI@v1
