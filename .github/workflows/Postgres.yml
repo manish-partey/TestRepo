@@ -31,6 +31,12 @@ jobs:
         InActiveDatabaseUrl=$(az keyvault secret show --name "InActive-database-url" --vault-name "parteyKeyVault1" --query "value" --output tsv)
         echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl"
       
+    - name: PowershellScript
+      run: |
+            Write-Host "Line 1"
+            Write-Host "Line 2"
+            Write-Host "Line 3"
+      shell: pwsh
 
     # - name: Printing KeyVault Secrets
     #   run: |          
@@ -44,7 +50,7 @@ jobs:
     #     inlineScript: |
     #       Write-Output  $Env:In_ActiveDatabase_Url
     #     azPSVersion: "latest"
-
+      
     - name: Stopping Postgres Server
       uses: azure/CLI@v1
       with:
