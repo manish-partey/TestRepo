@@ -30,4 +30,4 @@ jobs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az account show       
+          az postgres flexible-server create --resource-group rgManish --name parteyfs       
