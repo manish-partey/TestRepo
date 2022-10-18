@@ -32,18 +32,17 @@ jobs:
         echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl"
       
     - name: PowershellScript
+      id: ReadKeyVaultPowershell
       run: |
-            $test = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
-            Write-Host $test
+            $test = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"            
             Write-Host $test.Substring(0, $test.IndexOf("."))
-            Write-Host "Line 3"
+            echo "::set-output name=InActiveDatabaseUrl13::$test.Substring(0, $test.IndexOf("."))"
       shell: pwsh
 
-    # - name: Printing KeyVault Secrets
-    #   run: |          
-    #       echo "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"          
-    #   env: #Set secrets as environment variables
-    #     In_ActiveDatabase_Url: ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}
+    - name: Printing KeyVault Secrets
+      run: |          
+          echo "${{ steps.ReadKeyVaultPowershell.outputs.InActiveDatabaseUrl13 }}"          
+      
 
     # - name: Run Azure PowerShell script
     #   uses: azure/powershell@v1
