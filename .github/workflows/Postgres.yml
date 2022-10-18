@@ -33,7 +33,7 @@ jobs:
       
     - name: PowershellScript
       run: |
-            $test = ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}
+            $test = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
             Write-Host $test
             Write-Host "Line 3"
       shell: pwsh
