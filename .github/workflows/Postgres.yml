@@ -39,7 +39,7 @@ jobs:
       uses: azure/powershell@v1
       with:
         inlineScript: |
-          $strServerName.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))
+          ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))
         azPSVersion: "latest"
 
     - name: Stopping Postgres Server
