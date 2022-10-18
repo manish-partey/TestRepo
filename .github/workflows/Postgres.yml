@@ -25,9 +25,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Azure CLI script
+    - name: Stopping Postgres Server
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az postgres flexible-server create --resource-group rgManish --name parteyfs       
+          az postgres flexible-server stop  --resource-group rgManish --name parteyfs
