@@ -33,8 +33,8 @@ jobs:
       
     - name: PowershellScript
       run: |
-            Write-Host "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
-            Write-Host "Line 2"
+            Write-Host ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))
+            Write-Host "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))"
             Write-Host "Line 3"
       shell: pwsh
 
