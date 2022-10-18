@@ -25,6 +25,16 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Reading KeyVault Secrets
+      id: ReadKeyVault
+      run: |
+        InActiveDatabaseUrl=$(az keyvault secret show --name "InActive-database-url" --vault-name "parteyKeyVault1" --query "value" --output tsv)
+        echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl.Substring(0, $strServerName.IndexOf("."))"
+
+    - name: Printing KeyVault Secrets
+      run: |          
+          echo "${{ steps.ReadKeyVault.outputs.ActiveDatabaseUrl }}"          
+
     - name: Stopping Postgres Server
       uses: azure/CLI@v1
       with:
