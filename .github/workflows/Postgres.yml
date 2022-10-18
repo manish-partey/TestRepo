@@ -35,6 +35,7 @@ jobs:
       run: |
             $test = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
             Write-Host $test
+            Write-Host "$test.Substring(0, $test.IndexOf("."))"
             Write-Host "Line 3"
       shell: pwsh
 
