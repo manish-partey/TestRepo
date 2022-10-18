@@ -30,4 +30,4 @@ jobs:
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az postgres flexible-server stop  --resource-group rgManish --name parteyfs
+          az postgres flexible-server start  --resource-group rgManish --name parteyfs
