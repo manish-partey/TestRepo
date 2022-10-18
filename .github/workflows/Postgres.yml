@@ -29,11 +29,18 @@ jobs:
       id: ReadKeyVault
       run: |
         InActiveDatabaseUrl=$(az keyvault secret show --name "InActive-database-url" --vault-name "parteyKeyVault1" --query "value" --output tsv)
-        echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl.Substring(0, $strServerName.IndexOf("."))"
+        echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl"
 
     - name: Printing KeyVault Secrets
       run: |          
           echo "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"          
+
+    - name: Run Azure PowerShell script
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $strServerName.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))
+        azPSVersion: "latest"
 
     - name: Stopping Postgres Server
       uses: azure/CLI@v1
