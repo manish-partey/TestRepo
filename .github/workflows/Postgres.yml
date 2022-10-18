@@ -32,22 +32,22 @@ jobs:
         echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl"
       
 
-    - name: Printing KeyVault Secrets
-      run: |          
-          echo "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"          
-      env: #Set secrets as environment variables
-        In_ActiveDatabase_Url: ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}
+    # - name: Printing KeyVault Secrets
+    #   run: |          
+    #       echo "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"          
+    #   env: #Set secrets as environment variables
+    #     In_ActiveDatabase_Url: ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}
 
-    - name: Run Azure PowerShell script
-      uses: azure/powershell@v1
-      with:
-        inlineScript: |
-          Write-Output  $Env:In_ActiveDatabase_Url
-        azPSVersion: "latest"
+    # - name: Run Azure PowerShell script
+    #   uses: azure/powershell@v1
+    #   with:
+    #     inlineScript: |
+    #       Write-Output  $Env:In_ActiveDatabase_Url
+    #     azPSVersion: "latest"
 
     - name: Stopping Postgres Server
       uses: azure/CLI@v1
       with:
         azcliversion: 2.30.0
         inlineScript: |
-          az postgres flexible-server start  --resource-group rgManish --name parteyfs
+          az postgres flexible-server stop  --resource-group rgManish --name ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}
