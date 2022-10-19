@@ -34,15 +34,12 @@ jobs:
     - name: PowershellScript
       id: ReadKeyVaultPowershell
       run: |
-            $test = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"            
+            $ServerURLWithHost = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
+            $ServerName = $ServerURLWithHost.Substring(0, $ServerURLWithHost.IndexOf("."))
             Write-Host $test.Substring(0, $test.IndexOf("."))
-            echo "::set-output name=InActiveDatabaseUrl13::$test.Substring(0, $test.IndexOf("."))"
-      shell: pwsh
+            Start-AzPostgreSqlFlexibleServer -ResourceGroupName rgManish -Name $ServerName
 
-    - name: Printing KeyVault Secrets
-      run: |          
-          echo "${{ steps.ReadKeyVaultPowershell.outputs.InActiveDatabaseUrl13 }}"          
-      
+      shell: pwsh
 
     # - name: Run Azure PowerShell script
     #   uses: azure/powershell@v1
