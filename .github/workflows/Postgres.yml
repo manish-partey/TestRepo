@@ -36,7 +36,7 @@ jobs:
       run: |
             $ServerURLWithHost = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
             $ServerName = $ServerURLWithHost.Substring(0, $ServerURLWithHost.IndexOf("."))
-            Write-Host $test.Substring(0, $test.IndexOf("."))
+            Write-Host $ServerName
             Start-AzPostgreSqlFlexibleServer -ResourceGroupName rgManish -Name $ServerName
 
       shell: pwsh
