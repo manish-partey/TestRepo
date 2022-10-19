@@ -30,27 +30,19 @@ jobs:
       run: |
         InActiveDatabaseUrl=$(az keyvault secret show --name "InActive-database-url" --vault-name "parteyKeyVault1" --query "value" --output tsv)
         echo "::set-output name=InActiveDatabaseUrl::$InActiveDatabaseUrl"
-      
+        
     - name: PowershellScript
       id: ReadKeyVaultPowershell
+      shell: pwsh
       run: |
             $ServerURLWithHost = "${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}"
             $ServerName = $ServerURLWithHost.Substring(0, $ServerURLWithHost.IndexOf("."))
             Write-Host $ServerName
-            Start-AzPostgreSqlFlexibleServer -ResourceGroupName rgManish -Name $ServerName
+            echo "::set-output name=InActiveDatabaseUrl123::$ServerName"
 
-      shell: pwsh
-
-    # - name: Run Azure PowerShell script
-    #   uses: azure/powershell@v1
-    #   with:
-    #     inlineScript: |
-    #       Write-Output  $Env:In_ActiveDatabase_Url
-    #     azPSVersion: "latest"
-      
-    # - name: Stopping Postgres Server
-    #   uses: azure/CLI@v1
-    #   with:
-    #     azcliversion: 2.30.0
-    #     inlineScript: |
-    #       az postgres flexible-server stop  --resource-group rgManish --name ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.Substring(0, ${{ steps.ReadKeyVault.outputs.InActiveDatabaseUrl }}.IndexOf("."))
+    - name: Stopping Postgres Server
+      uses: azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az postgres flexible-server stop  --resource-group rgManish --name "${{ steps.ReadKeyVaultPowershell.outputs.InActiveDatabaseUrl123 }}"
