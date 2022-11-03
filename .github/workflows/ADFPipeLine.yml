@@ -1,0 +1,54 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Azure Login
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+    
+    - name: PowershellScript
+      id: ReadKeyVaultPowershell
+      shell: pwsh
+      run: |
+            $headers = New-Object "System.Collections.Generic.Dictionary[[String],[String]]"
+            $headers.Add("aeg-sas-key", "4J66Zsl4SYrfNXoqcS6LIoPbGt5LFodvubHfMQ/vGGs=")
+            $headers.Add("Content-Type", "application/json")
+
+            $body = "[
+            `n  {
+            `n    `"topic`": `"/subscriptions/e8f1787b-1cc9-46b9-b301-d36898fa4a71/resourceGroups/gridResourceGroup/providers/Microsoft.EventGrid/topics/parteyCustomTopic`",
+            `n    `"subject`": `"firstSubject`",
+            `n    `"id`": 6848646168,
+            `n    `"eventType`": `"demo`",
+            `n    `"eventTime`": `"2022-11-02T21:31:22`",
+            `n   `"data`":{
+            `n      `"name`": `"afssafsf`"
+            `n    },
+            `n    `"dataVersion`": `"1.0`",
+            `n  `"metadataVersion`": `"1`"
+            `n  }
+            `n]  "
+
+            $response = Invoke-RestMethod 'https://parteycustomtopic.westus2-1.eventgrid.azure.net/api/events' -Method 'POST' -Headers $headers -Body $body
+            $response | ConvertTo-Json
+
+    
